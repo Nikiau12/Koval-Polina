@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Главная страница</title>
+  <link rel="icon" href="img/IMG_2157_1-f3c33075-537175ef.png" type="image/x-icon">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Dongle:wght@400&display=swap" rel="stylesheet">
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      font-family: 'Dongle', sans-serif;
+      background-color: white;
+    }
+    
+    .hero {
+      position: relative;
+      width: var(--hero-width, 100%);
+      height: var(--hero-height, 100vh);
+      max-width: 100%;
+      background: url('img/abba2720-1500x (1).jpg') center center / cover no-repeat;
+      opacity: var(--hero-opacity, 0.8);
+    }
+    
+    .nav-buttons {
+      position: absolute;
+      top: 50px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: var(--button-gap, 100px);
+      justify-content: center;
+    }
+    
+    .nav-buttons a {
+      text-decoration: none;
+      color: #000000;
+      font-size: 4rem;
+      font-weight: bold;
+      transition: opacity 0.3s;
+    }
+    
+    .nav-buttons a:hover {
+      opacity: 0.7;
+    }
+    
+    .cart-icon {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  width: 50px;
+  height: 50px;
+  background: black;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+  cursor: pointer;
+  z-index: 1000;
+}
+.cart-icon a {
+  color: white;
+  text-decoration: none;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+    .second-page {
+      padding-top: 100px;
+      padding-bottom: 50px;
+      opacity: 0;
+      transform: translateY(50px);
+      transition: opacity 1s ease-out, transform 1s ease-out;
+    }
+    
+    .show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    
+    .section-title {
+      text-align: center;
+      font-size: 3rem;
+      font-weight: bold;
+      margin-bottom: 50px;
+    }
+    
+    .gallery {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+    
+    .item-container {
+      position: relative;
+      text-align: center;
+      width: var(--container-width, 300px);
+      margin-top: 50px;
+      cursor: pointer;
+    }
+    
+    .add-to-cart {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: black;
+      color: white;
+      border: none;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      font-size: 1.5rem;
+      font-weight: bold;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .gallery img {
+      width: var(--image-width, 300px);
+      height: auto;
+      border-radius: 10px;
+      object-fit: cover;
+    }
+    
+    .price {
+      margin-top: 10px;
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #333;
+    }
+    
+    @media (max-width: 768px) {
+      .nav-buttons {
+        gap: var(--button-gap, 20px);
+        top: 50px;
+      }
+      .nav-buttons a {
+        font-size: 1.5rem;
+      }
+      .hero {
+      position: relative;
+      width: var(--hero-width, 100%);
+      height: var(--hero-height, 40vh);
+      max-width: 100%;
+      background: url('img/abba2720-1500x (1).jpg') center center / cover no-repeat;
+      opacity: var(--hero-opacity, 0.8);
+    }
+
+
+    .about-title {
+      text-align: center;
+      font-size: 4rem;
+      font-weight: bold;
+      margin-top: 80px;
+    }
+      .cart-icon {
+        top: auto;
+        left: auto;
+        bottom: 20px;
+        right: 20px;
+      }
+    
+
+
+
+    }
+  </style>
+
+<script>
+  function updateCartCount() {
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+    document.getElementById("cart-count").textContent = cart.length;
+  }
+  
+function addToCart(name, price, image) {
+   let cart = JSON.parse(localStorage.getItem("cart")) || [];
+   cart.push({ name, price, image });
+   localStorage.setItem("cart", JSON.stringify(cart));
+   updateCartCount();
+}
+
+  
+  document.addEventListener("DOMContentLoaded", function() {
+    updateCartCount();
+    window.addEventListener("scroll", function() {
+      let secondPage = document.querySelector(".second-page");
+      let position = secondPage.getBoundingClientRect().top;
+      let screenHeight = window.innerHeight;
+      if (position < screenHeight * 0.75) {
+        secondPage.classList.add("show");
+      }
+    });
+  });
+</script>
+
+
+</head>
+<body>
+  <a href="сart.html" class="cart-icon">
+    <span id="cart-count">0</span>
+  </a>
+  <section class="hero">
+    <nav class="nav-buttons">
+      <a href="about.html">About</a>
+      <a href="shop.html">Shop</a>
+      <a href="#collection">Collection</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </section>
+  
+  <section class="second-page">
+    <h2 class="section-title">Shop Popular Items</h2>
+    <div class="gallery">
+      <div class="item-container" onclick="redirectToShop('Item 1', '200', 'img/IMG_7127-157959e4-51a691e3.jpg.jpg')">
+        <button class="add-to-cart" onclick="event.stopPropagation(); addToCart('Item 1', '200', 'img/IMG_7127-157959e4-51a691e3.jpg.jpg')">+</button>
+        <img src="img/IMG_7127-157959e4-51a691e3.jpg.jpg" alt="Item 1">
+        <p class="price">$200</p>
+      </div>
+      <div class="item-container" onclick="redirectToShop('Item 1', '200', 'img/IMG_7127-157959e4-51a691e3.jpg.jpg')">
+        <button class="add-to-cart" onclick="event.stopPropagation(); addToCart('Item 1', '200', 'img/IMG_7127-157959e4-51a691e3.jpg.jpg')">+</button>
+        <img src="img/IMG_5991-73b31c56-0ecb6caf.jpg" alt="Item 1">
+        <p class="price">$200</p>
+      </div>
+      <div class="item-container" style="--container-width: 250px;" onclick="redirectToShop('Item 3', '160', 'img/IMG_5994-f3c4e743-8beca05f.JPG.jpg')">
+        <button class="add-to-cart" onclick="event.stopPropagation(); addToCart('Item 3', '160')">+</button>
+        <img src="img/IMG_5994-f3c4e743-8beca05f.JPG.jpg" alt="Item 3" style="--image-width: 250px;">
+        <p class="price">$160</p>
+      </div>
+    </div>
+  </section>
+</body>
+</html>

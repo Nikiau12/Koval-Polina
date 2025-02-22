@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cart</title>
+  <link rel="icon" href="img/IMG_2157_1-f3c33075-537175ef.png" type="image/x-icon">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Dongle:wght@400&display=swap" rel="stylesheet">
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      font-family: 'Dongle', sans-serif;
+      background-color: white;
+      text-align: center;
+    }
+    
+    .container {
+      max-width: 800px;
+      margin: 50px auto;
+      padding: 20px;
+    }
+    
+    h1 {
+      font-size: 3rem;
+    }
+    
+    .cart-items {
+      list-style: none;
+      padding: 0;
+    }
+    
+    .cart-items li {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px;
+      border-bottom: 1px solid #ddd;
+      font-size: 2rem;
+    }
+    
+    .cart-items img {
+      width: 100px;
+      border-radius: 10px;
+      margin-right: 10px;
+    }
+    
+    .button-container {
+      display: flex;
+      align-items: center;
+    }
+    
+    .quantity-btn {
+      background: black;
+      color: white;
+      border: none;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      font-size: 1.5rem;
+      font-weight: bold;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 5px;
+    }
+    
+    .total {
+      font-size: 2.5rem;
+      font-weight: bold;
+      margin-top: 20px;
+    }
+    
+    .checkout-btn {
+      display: block;
+      margin: 30px auto;
+      padding: 10px 80px;
+      font-size: 4rem;
+      font-family: 'Dongle', sans-serif;
+      background-color: black;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 10px;
+    }
+    
+    .checkout-btn:hover {
+      background-color: #333;
+    }
+    
+    .home-button {
+      position: fixed;
+      top: 60px;
+      left: 100px;
+      width: 100px;
+      height: 100px;
+      cursor: pointer;
+    }
+    
+    .payment-methods {
+      display: none;
+      margin-top: 20px;
+      font-size: 1.5rem;
+    }
+
+    @media (max-width: 768px) {
+      .home-button {
+      position: fixed;
+      top: 40px;
+      left: 60px;
+      width: 70px;
+      height: 70px;
+      cursor: pointer;
+    }
+    
+    .payment-methods {
+      display: none;
+      margin-top: 10px;
+      font-size: 0.8rem;
+    }
+    }
+
+  </style>
+  <script>
+    function updateTotalPrice(cart) {
+      let totalPrice = cart.reduce((sum, item) => sum + (parseFloat(item.price) * item.quantity), 0);
+      document.getElementById("total-price").textContent = `$${totalPrice.toFixed(2)}`;
+    }
+    
+    function loadCart() {
+      let cart = JSON.parse(localStorage.getItem("cart")) || [];
+      let cartItemsContainer = document.getElementById("cart-items");
+      
+      cartItemsContainer.innerHTML = "";
+      cart.forEach((item, index) => {
+        if (!item.quantity) {
+          item.quantity = 1;
+        }
+        
+        let listItem = document.createElement("li");
+        
+        let img = document.createElement("img");
+        img.src = item.image;
+        
+        let textContainer = document.createElement("span");
+        textContainer.textContent = `${item.name} - $${item.price}`;
+        
+        let quantityContainer = document.createElement("div");
+        quantityContainer.className = "button-container";
+        
+        // Кнопка уменьшения количества
+        let minusBtn = document.createElement("button");
+        minusBtn.className = "quantity-btn";
+        minusBtn.textContent = "-";
+        minusBtn.addEventListener("click", function(e) {
+          e.stopPropagation();
+          decreaseQuantity(index);
+        });
+        
+        // Отображение текущего количества
+        let quantitySpan = document.createElement("span");
+        quantitySpan.textContent = item.quantity;
+        quantitySpan.style.margin = "0 10px";
+        
+        // Кнопка увеличения количества
+        let plusBtn = document.createElement("button");
+        plusBtn.className = "quantity-btn";
+        plusBtn.textContent = "+";
+        plusBtn.addEventListener("click", function(e) {
+          e.stopPropagation();
+          increaseQuantity(index);
+        });
+        
+        quantityContainer.appendChild(minusBtn);
+        quantityContainer.appendChild(quantitySpan);
+        quantityContainer.appendChild(plusBtn);
+        
+        listItem.appendChild(img);
+        listItem.appendChild(textContainer);
+        listItem.appendChild(quantityContainer);
+        
+        cartItemsContainer.appendChild(listItem);
+      });
+      
+      updateTotalPrice(cart);
+    }
+    
+    function increaseQuantity(index) {
+      let cart = JSON.parse(localStorage.getItem("cart")) || [];
+      cart[index].quantity = (cart[index].quantity || 1) + 1;
+      localStorage.setItem("cart", JSON.stringify(cart));
+      loadCart();
+    }
+    
+    function decreaseQuantity(index) {
+      let cart = JSON.parse(localStorage.getItem("cart")) || [];
+      if (cart[index].quantity > 1) {
+        cart[index].quantity = cart[index].quantity - 1;
+      } else {
+        // Если количество равно 1, удаляем товар из корзины
+        cart.splice(index, 1);
+      }
+      localStorage.setItem("cart", JSON.stringify(cart));
+      loadCart();
+    }
+    
+    function showPaymentMethods() {
+      document.getElementById("payment-methods").style.display = "block";
+    }
+    
+    document.addEventListener("DOMContentLoaded", loadCart);
+  </script>
+</head>
+<body>
+  <a href="index.html">
+    <img src="img/IMG_2157_1-f3c33075-537175ef.png" alt="Home" class="home-button">
+  </a>
+  <div class="container">
+    <h1>Cart</h1>
+    <ul id="cart-items" class="cart-items"></ul>
+    <div class="total">Total: <span id="total-price">$0</span></div>
+    <button class="checkout-btn" onclick="showPaymentMethods()">Pay</button>
+    <div id="payment-methods" class="payment-methods">
+      <p>Select a payment method:</p>
+      <ul>
+        <li>Credit Card</li>
+        <li>PayPal</li>
+        <li>Apple Pay</li>
+      </ul>
+    </div>
+  </div>
+</body>
+</html>

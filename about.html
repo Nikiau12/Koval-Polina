@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About</title>
+  <link rel="icon" href="img/IMG_2157_1-f3c33075-537175ef.png" type="image/x-icon">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- Загружаем шрифт Dongle с весом 300 (Light) и 700 для заголовка -->
+  <link href="https://fonts.googleapis.com/css2?family=Dongle:wght@300;700&display=swap" rel="stylesheet">
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      font-family: 'Dongle', sans-serif;
+      background-color: white;
+    }
+    /* Логотип (домашняя кнопка) как на странице Shop */
+    .home-button {
+      position: fixed;
+      top: 60px;
+      left: 100px;
+      width: 100px;
+      height: 100px;
+      cursor: pointer;
+    }
+    @media (max-width: 768px) {
+      .home-button {
+        top: 40px;
+        left: 60px;
+        width: 70px;
+        height: 70px;
+      }
+    }
+    /* Значок корзины */
+    .cart-icon {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      width: 50px;
+      height: 50px;
+      background: black;
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      font-weight: bold;
+      cursor: pointer;
+      z-index: 1000;
+    }
+    .cart-icon a {
+      color: white;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
+    }
+    /* Контейнер для контента About с эффектом появления */
+    .about-container {
+      max-width: 800px;
+      margin: 150px auto;
+      padding: 20px;
+      text-align: center;
+      opacity: 0;
+      animation: fadeIn 1.5s forwards;
+    }
+    /* Отдельное оформление заголовка About */
+    .about-header {
+      font-size: 4rem;  /* можно регулировать размер */
+      font-weight: 700; /* Используем жирный вес для заголовка */
+      margin-bottom: 30px; /* отступ между заголовком и текстом */
+      text-align: center;
+    }
+    /* Отдельное оформление текстового блока с шрифтом Dongle Light */
+    .about-text {
+      font-size: 2rem;  /* размер текста, можно менять */
+      font-weight: 300; /* используем Light вес */
+      line-height: 1.5;
+      text-align: left;
+      margin: 0 auto;
+      max-width: 800px;
+    }
+
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      
+    }
+
+    @media (max-width: 768px) {
+      .home-button {
+      position: fixed;
+      top: 40px;
+      left: 60px;
+      width: 70px;
+      height: 70px;
+      cursor: pointer;
+    }
+
+    .cart-icon {
+        top: auto;
+        left: auto;
+        bottom: 20px;
+        right: 20px;
+      }
+
+
+
+  </style>
+</head>
+<body>
+  <!-- Логотип, ведущий на главную -->
+  <a href="index.html">
+    <img src="img/IMG_2157_1-f3c33075-537175ef.png" alt="Home" class="home-button">
+  </a>
+  
+  <!-- Значок корзины -->
+  <a href="cart.html" class="cart-icon">
+    <span id="cart-count">0</span>
+  </a>
+  
+  <!-- Контейнер для контента About -->
+  <div class="about-container">
+    <!-- Заголовок About -->
+    <h1 class="about-header">About me</h1>
+    <!-- Текстовый блок -->
+    <div class="about-text">
+      <p>
+        Graduated from the Higher School of Economics, Faculty of Animation. She has been making handmade clothes for about three years. Polina also paints on fabrics and canvases, works with wood and ceramics.
+      </p>
+      <p>
+        Polina's works are inspired by women's bodies, nature and have religious overtones. The paintings depict naked women in the garden, angels, magical animals and imaginary, mystical flowers. The artist often paints on plywood or pieces of wood found on the streets. Now living in Tbilisi, Polina creates street art objects. She likes to revitalize and ‘liberate’ the works so that they continue to exist autonomously and change without further influence from the author.
+      </p>
+      <p>
+       
+      </p>
+    </div>
+  </div>
+  
+  <script>
+    function updateCartCount() {
+      let cart = JSON.parse(localStorage.getItem("cart")) || [];
+      document.getElementById("cart-count").textContent = cart.length;
+    }
+    document.addEventListener("DOMContentLoaded", updateCartCount);
+  </script>
+</body>
+</html>

@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shop</title>
+  <link rel="icon" href="img/IMG_2157_1-f3c33075-537175ef.png" type="image/x-icon">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Dongle:wght@400&display=swap" rel="stylesheet">
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      font-family: 'Dongle', sans-serif;
+      background-color: white;
+    }
+    
+    .shop-title {
+      text-align: center;
+      font-size: 4rem;
+      font-weight: bold;
+      margin-top: 80px;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 100px auto 50px;
+      padding: 20px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+    }
+    
+    .product {
+      width: 220px;
+      text-align: center;
+      position: relative;
+    }
+    
+    .product img {
+      width: 100%;
+      border-radius: 10px;
+    }
+    
+    .price {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #333;
+      margin-top: 5px;
+    }
+    
+    .add-to-cart {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: black;
+      color: white;
+      border: none;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      font-size: 1.5rem;
+      font-weight: bold;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .cart-icon {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      width: 50px;
+      height: 50px;
+      background: black;
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      font-weight: bold;
+      cursor: pointer;
+      z-index: 1000;
+    }
+    .cart-icon a {
+      color: white;
+      text-decoration: none;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .home-button {
+      position: fixed;
+      top: 60px;
+      left: 100px;
+      width: 100px;
+      height: 100px;
+      cursor: pointer;
+    }
+
+    @media (max-width: 768px) {
+      .home-button {
+      position: fixed;
+      top: 40px;
+      left: 60px;
+      width: 70px;
+      height: 70px;
+      cursor: pointer;
+    }
+    
+    .payment-methods {
+      display: none;
+      margin-top: 10px;
+      font-size: 0.8rem;
+    }
+    .cart-icon {
+        top: auto;
+        left: auto;
+        bottom: 20px;
+        right: 20px;
+      }
+    
+    }
+
+  </style>
+</head>
+<body>
+  <a href="index.html">
+    <img src="img/IMG_2157_1-f3c33075-537175ef.png" alt="Home" class="home-button">
+  </a>
+  
+  <!-- Значок корзины -->
+  <a href="сart.html" class="cart-icon">
+    <span id="cart-count">0</span>
+  </a>
+  
+  <div class="shop-title">Shop</div>
+  
+  <!-- Список продуктов, прописанный вручную -->
+  <div class="container">
+    <div class="product">
+      <a href="product1.html">
+        <img src="img/IMG_9010_1-3aff3c23-76cce210-1c446528.jpg.jpg" alt="Товар 1">
+      </a>
+      <p class="price">$80</p>
+      <button class="add-to-cart" onclick="addToCart('Товар 1', '59.99', 'img/item1.jpg')">+</button>
+    </div>
+    <div class="product">
+      <a href="product2.html">
+        <img src="img/IMG_2157_1-f3c33075-537175ef.jpg" alt="Товар 2">
+      </a>
+      <p class="price">$1200</p>
+      <button class="add-to-cart" onclick="addToCart('Товар 2', '79.99', 'img/item2.jpg')">+</button>
+    </div>
+    <div class="product">
+      <a href="product3.html">
+        <img src="img/IMG_1675_1-9c65cd77-da42b24e.jpg" alt="Товар 2">
+      </a>
+      <p class="price">$1200</p>
+      <button class="add-to-cart" onclick="addToCart('Товар 2', '79.99', 'img/item2.jpg')">+</button>
+    </div>
+  </div>
+
+  <script>
+    function addToCart(name, price, image) {
+      let cart = JSON.parse(localStorage.getItem("cart")) || [];
+      let existingItem = cart.find(item => item.name === name);
+      if (existingItem) {
+        existingItem.quantity = (existingItem.quantity || 1) + 1;
+      } else {
+        cart.push({ name, price, image, quantity: 1 });
+      }
+      localStorage.setItem("cart", JSON.stringify(cart));
+      updateCartCount();
+    }
+
+    function updateCartCount() {
+      let cart = JSON.parse(localStorage.getItem("cart")) || [];
+      let totalCount = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
+      document.getElementById("cart-count").textContent = totalCount;
+    }
+    
+    document.addEventListener("DOMContentLoaded", updateCartCount);
+  </script>
+</body>
+</html>
