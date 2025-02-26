@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product Details</title>
+  <link rel="icon" href="img/favicon.ico" type="image/x-icon">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- Подключаем шрифты -->
+  <link href="https://fonts.googleapis.com/css2?family=Dongle:wght@300;700&display=swap" rel="stylesheet">
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      font-family: 'Dongle', sans-serif;
+      background-color: white;
+      text-align: center;
+    }
+    /* Логотип, ведущий на страницу Shop */
+    .home-button {
+      position: fixed;
+      top: 60px;
+      left: 100px;
+      width: 100px;
+      height: 100px;
+      cursor: pointer;
+    }
+    @media (max-width: 768px) {
+      .home-button {
+        top: 40px;
+        left: 60px;
+        width: 70px;
+        height: 70px;
+      }
+    }
+    .product-container {
+      max-width: 800px;
+      margin: 80px auto; /* уменьшен верхний отступ */
+      padding: 20px;
+    }
+    .product-header {
+      font-size: 4rem;
+      font-weight: 700;
+      margin-bottom: 30px;
+    }
+    .product-image {
+      width: 100%;
+      max-width: 400px;
+      border-radius: 10px;
+    }
+    .product-price {
+      font-size: 2rem;
+      margin: 20px 0;
+    }
+    .product-description {
+      font-size: 1.8rem;
+      font-weight: 300;
+      text-align: left;
+      margin: 20px auto;
+      max-width: 800px;
+      line-height: 1.5;
+    }
+
+    .cart-icon {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      width: 50px;
+      height: 50px;
+      background: black;
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      font-weight: bold;
+      cursor: pointer;
+      z-index: 1000;
+    }
+    .cart-icon a {
+      color: white;
+      text-decoration: none;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .add-to-cart {
+      background: black;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      font-size: 1.8rem;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+
+      <!-- Значок корзины -->
+  <a href="сart.html" class="cart-icon">
+    <span id="cart-count">0</span>
+  </a>
+
+    <a href="shop.html">
+      <img src="img/IMG_2157_1-f3c33075-537175ef.png" alt="Home" class="home-button">
+    </a>
+
+
+  <!-- Централизованная страница продукта -->
+  <div class="product-container" id="product-details">
+    <!-- Здесь будут подгружены данные о товаре -->
+  </div>
+
+  <script>
+    // Массив продуктов (обновлен для id 1, 2 и 3)
+    const products = [
+      { 
+        id: 1, 
+        name: 'Товар 1', 
+        price: '80', 
+        image: 'img/IMG_9010_1-3aff3c23-76cce210-1c446528.jpg.jpg', 
+        description: 'Описание товара 1. Краткое описание характеристик товара и его преимуществ.' 
+      },
+      { 
+        id: 2, 
+        name: 'Товар 2', 
+        price: '1200', 
+        image: 'img/IMG_2157_1-f3c33075-537175ef.jpg', 
+        description: 'Описание товара 2. Подробности о материале, размерах и других характеристиках.' 
+      },
+      { 
+        id: 3, 
+        name: 'Товар 3', 
+        price: '1200', 
+        image: 'img/IMG_1675_1-9c65cd77-da42b24e.jpg', 
+        description: 'Описание товара 3. Дополнительная информация о товаре, его особенностях и преимуществах.' 
+      }
+    ];
+
+    function updateCartCount() {
+      let cart = JSON.parse(localStorage.getItem("cart")) || [];
+      document.getElementById("cart-count").textContent = cart.length;
+    }
+    document.addEventListener("DOMContentLoaded", updateCartCount);
+
+
+// Функция для получения параметра из URL
+function getQueryParam(param) {
+      const params = new URLSearchParams(window.location.search);
+      return params.get(param);
+    }
+
+    // Получаем id продукта из URL
+    const productId = getQueryParam('id');
+    // Ищем нужный товар в массиве
+    const product = products.find(p => p.id === Number(productId));
+
+    // Функция для отрисовки информации о товаре
+    function renderProduct(product) {
+      if (!product) {
+        document.getElementById('product-details').innerHTML = '<p>Продукт не найден.</p>';
+        return;
+      }
+      document.getElementById('product-details').innerHTML = `
+        <h1 class="product-header">${product.name}</h1>
+        <img src="${product.image}" alt="${product.name}" class="product-image">
+        <p class="product-price">Цена: $${product.price}</p>
+        <div class="product-description">
+          ${product.description}
+        </div>
+        <button class="add-to-cart" onclick="addToCart('${product.name}', '${product.price}', '${product.image}')">Добавить в корзину</button>
+      `;
+    }
+
+    // Функция добавления в корзину
+    function addToCart(name, price, image) {
+      let cart = JSON.parse(localStorage.getItem("cart")) || [];
+      cart.push({ name, price, image });
+      localStorage.setItem("cart", JSON.stringify(cart));
+      alert('Товар добавлен в корзину!');
+      updateCartCount();
+    }
+
+    // Отрисовываем товар
+    renderProduct(product);
+  </script>
+</body>
+</html>
